@@ -118,7 +118,19 @@ class TaxiConsumer(AsyncJsonWebsocketConsumer):
         # Serialize the updated Trip data
         trip_data = NestedTripSerializer(trip).data
 
-        # Server/consumer sends update to rider via the Trip group
+        ###
+        # Check if Trip status is 'Started'
+        if trip.status == 'STARTED':
+            # Send message to drivers group saying trip accepted
+            await self.channel_layer.group_send(
+                group='drivers',
+                message={
+                    'type': 'echo.message',
+                    'data': f'Trip {trip_id} has been accepted.'
+                })
+        ###
+
+        # Server/consumer sends update via the Trip group
         await self.channel_layer.group_send(
             group=trip_id,
             message={

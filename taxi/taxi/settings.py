@@ -134,6 +134,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'staticfiles'))
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
 REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
 
 CHANNEL_LAYERS = {
@@ -161,3 +167,5 @@ SIMPLE_JWT = {
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '../media')
+
+CSRF_COOKIE_NAME = "csrftoken"

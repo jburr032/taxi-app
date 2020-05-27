@@ -12,8 +12,7 @@ RUN pip install -r requirements.txt
 
 COPY . /usr/src/app
 
-# new
 WORKDIR /usr/src/app/taxi
 
-# new
-RUN python manage.py collectstatic --noinput
+# JOSH: Uncomment this line when you add the docker-compose.yml file.
+# RUN python manage.py collectstatic --noinput

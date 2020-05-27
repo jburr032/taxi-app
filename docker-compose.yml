@@ -1,0 +1,45 @@
+version: "3.7"
+
+services:
+  taxi-redis:
+    container_name: taxi-redis
+    image: redis:5.0.7-alpine
+
+  taxi-database:
+    container_name: taxi-database
+    image: postgres:12.1
+    ports:
+      - 5433:5432
+    volumes:
+      - taxi-database:/var/lib/postgresql/data
+
+  taxi-server:
+    build:
+      context: ./server
+    command: daphne --bind 0.0.0.0 --port 8000 taxi.asgi:application # changed
+    container_name: taxi-server
+    depends_on:
+      - taxi-redis
+      - taxi-database
+    env_file:
+      - ./server/test.env
+    ports:
+      - 8001:8000
+    volumes:
+      - ./taxi:/usr/src/app
+
+  taxi-client:
+    build:
+      context: ./client
+    command: npm start
+    container_name: taxi-client
+    stdin_open: true
+    depends_on:
+      - taxi-server
+    ports:
+      - 3001:3000
+    volumes: # new
+      - ./client:/usr/src/app
+
+volumes:
+  taxi-database:

@@ -15,4 +15,4 @@ COPY . /usr/src/app
 WORKDIR /usr/src/app/taxi
 
 # JOSH: Uncomment this line when you add the docker-compose.yml file.
-# RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
